@@ -1,0 +1,85 @@
+var _user$project$LightsGame$toggleLight = F2(
+	function (indexToToggle, list) {
+		return A2(
+			_elm_lang$core$List$indexedMap,
+			F2(
+				function (i, isOn) {
+					return _elm_lang$core$Native_Utils.eq(indexToToggle, i) ? _elm_lang$core$Basics$not(isOn) : (_elm_lang$core$Native_Utils.eq(indexToToggle, i - 1) ? _elm_lang$core$Basics$not(isOn) : (_elm_lang$core$Native_Utils.eq(indexToToggle, i + 1) ? _elm_lang$core$Basics$not(isOn) : isOn));
+				}),
+			list);
+	});
+var _user$project$LightsGame$update = F2(
+	function (msg, model) {
+		var _p0 = msg;
+		return _elm_lang$core$Native_Utils.update(
+			model,
+			{
+				isOn: A2(_user$project$LightsGame$toggleLight, _p0._0, model.isOn)
+			});
+	});
+var _user$project$LightsGame$defaultBoard = _elm_lang$core$Native_List.fromArray(
+	[true, false, true, false, true]);
+var _user$project$LightsGame$init = function (startingBoard) {
+	return {isOn: startingBoard};
+};
+var _user$project$LightsGame$Model = function (a) {
+	return {isOn: a};
+};
+var _user$project$LightsGame$Toggle = function (a) {
+	return {ctor: 'Toggle', _0: a};
+};
+var _user$project$LightsGame$lightButton = F2(
+	function (buttonIndex, isOn) {
+		return A2(
+			_elm_lang$html$Html$div,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$style(
+					_elm_lang$core$Native_List.fromArray(
+						[
+							{
+							ctor: '_Tuple2',
+							_0: 'background-color',
+							_1: isOn ? 'orange' : 'green'
+						},
+							{ctor: '_Tuple2', _0: 'width', _1: '80px'},
+							{ctor: '_Tuple2', _0: 'height', _1: '80px'},
+							{ctor: '_Tuple2', _0: 'border-radius', _1: '4px'},
+							{ctor: '_Tuple2', _0: 'margin', _1: '2px'},
+							{ctor: '_Tuple2', _0: 'display', _1: 'inline-block'}
+						])),
+					_elm_lang$html$Html_Events$onClick(
+					_user$project$LightsGame$Toggle(buttonIndex))
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[]));
+	});
+var _user$project$LightsGame$view = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				A2(_elm_lang$core$List$indexedMap, _user$project$LightsGame$lightButton, model.isOn)),
+				A2(
+				_elm_lang$html$Html$hr,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[])),
+				A2(
+				_elm_lang$html$Html$pre,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(
+						_elm_lang$core$Basics$toString(model))
+					]))
+			]));
+};
