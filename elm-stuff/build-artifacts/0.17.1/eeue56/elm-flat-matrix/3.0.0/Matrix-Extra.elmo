@@ -1,0 +1,292 @@
+var _eeue56$elm_flat_matrix$Matrix_Extra$power = F2(
+	function (a, b) {
+		return A3(
+			_eeue56$elm_flat_matrix$Matrix$map2,
+			F2(
+				function (x, y) {
+					return Math.pow(x, y);
+				}),
+			a,
+			b);
+	});
+var _eeue56$elm_flat_matrix$Matrix_Extra_ops = _eeue56$elm_flat_matrix$Matrix_Extra_ops || {};
+_eeue56$elm_flat_matrix$Matrix_Extra_ops['.^'] = _eeue56$elm_flat_matrix$Matrix_Extra$power;
+var _eeue56$elm_flat_matrix$Matrix_Extra$hadamard = F2(
+	function (a, b) {
+		return A3(
+			_eeue56$elm_flat_matrix$Matrix$map2,
+			F2(
+				function (x, y) {
+					return x * y;
+				}),
+			a,
+			b);
+	});
+var _eeue56$elm_flat_matrix$Matrix_Extra_ops = _eeue56$elm_flat_matrix$Matrix_Extra_ops || {};
+_eeue56$elm_flat_matrix$Matrix_Extra_ops['.*'] = _eeue56$elm_flat_matrix$Matrix_Extra$hadamard;
+var _eeue56$elm_flat_matrix$Matrix_Extra$subtract = F2(
+	function (a, b) {
+		return A3(
+			_eeue56$elm_flat_matrix$Matrix$map2,
+			F2(
+				function (x, y) {
+					return x - y;
+				}),
+			a,
+			b);
+	});
+var _eeue56$elm_flat_matrix$Matrix_Extra$add = F2(
+	function (a, b) {
+		return A3(
+			_eeue56$elm_flat_matrix$Matrix$map2,
+			F2(
+				function (x, y) {
+					return x + y;
+				}),
+			a,
+			b);
+	});
+var _eeue56$elm_flat_matrix$Matrix_Extra$unpackMaybeList = F2(
+	function (fn, ls) {
+		return A3(
+			_elm_lang$core$List$foldl,
+			F2(
+				function (item, ls) {
+					var _p0 = fn(item);
+					if (_p0.ctor === 'Just') {
+						return A2(
+							_elm_lang$core$Basics_ops['++'],
+							ls,
+							_elm_lang$core$Native_List.fromArray(
+								[_p0._0]));
+					} else {
+						return ls;
+					}
+				}),
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			ls);
+	});
+var _eeue56$elm_flat_matrix$Matrix_Extra$prettyPrint = function (matrix) {
+	var printCell = function (cell) {
+		return A2(
+			_elm_lang$html$Html$td,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$style(
+					_elm_lang$core$Native_List.fromArray(
+						[
+							{ctor: '_Tuple2', _0: 'border', _1: '1px solid black'}
+						]))
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_evancz$elm_graphics$Element$toHtml(
+					_evancz$elm_graphics$Element$show(cell))
+				]));
+	};
+	var printXCell = function (cell) {
+		return A2(
+			_elm_lang$html$Html$td,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$style(
+					_elm_lang$core$Native_List.fromArray(
+						[
+							{ctor: '_Tuple2', _0: 'border', _1: '1px solid black'},
+							{ctor: '_Tuple2', _0: 'background-color', _1: '#A8A8F5'}
+						]))
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_evancz$elm_graphics$Element$toHtml(
+					_evancz$elm_graphics$Element$show(cell))
+				]));
+	};
+	var printRow = F2(
+		function (i, row) {
+			return A2(
+				_elm_lang$html$Html$tr,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				A2(
+					_elm_lang$core$List_ops['::'],
+					printXCell(i),
+					_elm_lang$core$Array$toList(
+						A2(_elm_lang$core$Array$map, printCell, row))));
+		});
+	var printXIndex = A2(
+		_elm_lang$html$Html$tr,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		A2(
+			_elm_lang$core$List_ops['::'],
+			A2(
+				_elm_lang$html$Html$td,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$style(
+						_elm_lang$core$Native_List.fromArray(
+							[
+								{ctor: '_Tuple2', _0: 'background-color', _1: 'black'}
+							]))
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[])),
+			A2(
+				_elm_lang$core$List$map,
+				printXCell,
+				_elm_lang$core$Native_List.range(
+					0,
+					_eeue56$elm_flat_matrix$Matrix$width(matrix) - 1))));
+	return A2(
+		_elm_lang$html$Html$table,
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		A2(
+			_elm_lang$core$List_ops['::'],
+			printXIndex,
+			A2(
+				_elm_lang$core$List$indexedMap,
+				printRow,
+				A2(
+					_eeue56$elm_flat_matrix$Matrix_Extra$unpackMaybeList,
+					function (i) {
+						return A2(_eeue56$elm_flat_matrix$Matrix$getRow, i, matrix);
+					},
+					_elm_lang$core$Native_List.range(
+						0,
+						_eeue56$elm_flat_matrix$Matrix$height(matrix) - 1)))));
+};
+var _eeue56$elm_flat_matrix$Matrix_Extra$neighbours = F3(
+	function (x, y, matrix) {
+		var grab = F2(
+			function (di, dj) {
+				return A3(_eeue56$elm_flat_matrix$Matrix$get, x + di, y + dj, matrix);
+			});
+		return A2(
+			_eeue56$elm_flat_matrix$Matrix_Extra$unpackMaybeList,
+			_elm_lang$core$Basics$identity,
+			A2(
+				_elm_lang$core$List$filter,
+				function (x) {
+					var _p1 = x;
+					if (_p1.ctor === 'Just') {
+						return true;
+					} else {
+						return false;
+					}
+				},
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(grab, -1, -1),
+						A2(grab, -1, 0),
+						A2(grab, -1, 1),
+						A2(grab, 0, -1),
+						A2(grab, 0, 1),
+						A2(grab, 1, -1),
+						A2(grab, 1, 0),
+						A2(grab, 1, 1)
+					])));
+	});
+var _eeue56$elm_flat_matrix$Matrix_Extra$indexedNeighbours = F3(
+	function (x, y, matrix) {
+		var grab = F2(
+			function (di, dj) {
+				var ny = dj + y;
+				var nx = di + x;
+				return {
+					ctor: '_Tuple2',
+					_0: {ctor: '_Tuple2', _0: nx, _1: ny},
+					_1: A3(_eeue56$elm_flat_matrix$Matrix$get, nx, ny, matrix)
+				};
+			});
+		return A2(
+			_eeue56$elm_flat_matrix$Matrix_Extra$unpackMaybeList,
+			function (_p2) {
+				var _p3 = _p2;
+				var _p4 = _p3._1;
+				if (_p4.ctor === 'Just') {
+					return _elm_lang$core$Maybe$Just(
+						{ctor: '_Tuple2', _0: _p3._0, _1: _p4._0});
+				} else {
+					return _elm_lang$core$Maybe$Nothing;
+				}
+			},
+			A2(
+				_elm_lang$core$List$filter,
+				function (_p5) {
+					var _p6 = _p5;
+					var _p7 = _p6._1;
+					if (_p7.ctor === 'Just') {
+						return true;
+					} else {
+						return false;
+					}
+				},
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(grab, -1, -1),
+						A2(grab, -1, 0),
+						A2(grab, -1, 1),
+						A2(grab, 0, -1),
+						A2(grab, 0, 1),
+						A2(grab, 1, -1),
+						A2(grab, 1, 0),
+						A2(grab, 1, 1)
+					])));
+	});
+var _eeue56$elm_flat_matrix$Matrix_Extra$diagonals = F3(
+	function (x, y, matrix) {
+		var grab = F2(
+			function (di, dj) {
+				return A3(_eeue56$elm_flat_matrix$Matrix$get, x + di, y + dj, matrix);
+			});
+		return A2(
+			_eeue56$elm_flat_matrix$Matrix_Extra$unpackMaybeList,
+			_elm_lang$core$Basics$identity,
+			A2(
+				_elm_lang$core$List$filter,
+				function (x) {
+					var _p8 = x;
+					if (_p8.ctor === 'Just') {
+						return true;
+					} else {
+						return false;
+					}
+				},
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(grab, -1, -1),
+						A2(grab, -1, 1),
+						A2(grab, 1, -1),
+						A2(grab, 1, 1)
+					])));
+	});
+var _eeue56$elm_flat_matrix$Matrix_Extra$neighboursFour = F3(
+	function (x, y, matrix) {
+		var grab = F2(
+			function (di, dj) {
+				return A3(_eeue56$elm_flat_matrix$Matrix$get, x + di, y + dj, matrix);
+			});
+		return A2(
+			_eeue56$elm_flat_matrix$Matrix_Extra$unpackMaybeList,
+			_elm_lang$core$Basics$identity,
+			A2(
+				_elm_lang$core$List$filter,
+				function (x) {
+					var _p9 = x;
+					if (_p9.ctor === 'Just') {
+						return true;
+					} else {
+						return false;
+					}
+				},
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(grab, -1, 0),
+						A2(grab, 0, -1),
+						A2(grab, 0, 1),
+						A2(grab, 1, 0)
+					])));
+	});
